@@ -13,7 +13,7 @@ type ActionState = {
 
 // バリデーションエラー処理
 function handleValidationError(error: any): ActionState {
-  const { eldErrors, formErrors } = error.atten();
+  const { eldErrors, formErrors } = error.flatten();
   // zodの仕様でパスワード一致確認のエラーは formErrorsで渡ってくる
   // formErrorsがある場合は、conrmPasswordフィールドにエラーを追加
   if (formErrors.length > 0) {
@@ -29,7 +29,6 @@ function handleValidationError(error: any): ActionState {
 function handleError(customErrors: Record<string, string[]>): ActionState {
   return { success: false, errors: customErrors };
 }
-l;
 
 export async function createUser(
   prevState: ActionState,
@@ -39,7 +38,7 @@ export async function createUser(
   const rawFormData = Object.fromEntries(
     ["name", "email", "password", "confirmPassword"].map((field) => [
       field,
-      FormData.get(field) as string,
+      formData.get(field) as string,
     ])
   ) as Record<string, string>;
 
