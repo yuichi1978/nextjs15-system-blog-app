@@ -1,0 +1,7 @@
+GitHub URL
+
+next-udemy-basic
+https://github.com/aokitashipro/next-udemy-basic
+
+next-udemy-blog
+https://github.com/aokitashipro/next-udemy-blog
