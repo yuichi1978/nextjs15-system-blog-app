@@ -13,7 +13,13 @@ import { createUser } from "@/lib/actions/createUser";
 
 export default function RegisterForm() {
     const [state, formAction] = useActionState(createUser, {
-        success: false, errors: {}
+        success: false, 
+        errors: {
+          name: [],
+          email: [],
+          password: [],
+          confirmPassword: []
+        },
     })
   return (
     <Card className="w-full max-w-md mx-auto">
@@ -25,28 +31,28 @@ export default function RegisterForm() {
             <div className="space-y-2">
                 <Label htmlFor="name">名前</Label>
                 <Input id="name" type="text" name="name" required />
-                {state.errors.name && (
+                {state.errors?.name && (
                     <p className="text-red-500 text-sm mt-1">{state.errors.name.join(',')}</p>
                 )}
             </div>
             <div className="space-y-2">
                 <Label htmlFor="email">メールアドレス</Label>
                 <Input id="email" type="email" name="email" required />
-                {state.errors.email && (
+                {state.errors?.email && (
                     <p className="text-red-500 text-sm mt-1">{state.errors.email.join(',')}</p>
                 )}
             </div>
             <div className="space-y-2">
                 <Label htmlFor="password">パスワード</Label>
                 <Input id="password" type="password" name="password" required />
-                {state.errors.password && (
+                {state.errors?.password && (
                     <p className="text-red-500 text-sm mt-1">{state.errors.password.join(',')}</p>
                 )}
             </div>
             <div className="space-y-2">
                 <Label htmlFor="confirmPassword">パスワード(確認)</Label>
                 <Input id="confirmPassword" type="password" name="confirmPassword" required />
-                {state.errors.confirmPassword && (
+                {state.errors?.confirmPassword && (
                     <p className="text-red-500 text-sm mt-1">{state.errors.confirmPassword.join(',')}</p>
                 )}
             </div>
