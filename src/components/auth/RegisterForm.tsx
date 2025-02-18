@@ -1,4 +1,5 @@
 'use client';
+
 import {
     Card,
     CardContent,
@@ -14,12 +15,7 @@ import { createUser } from "@/lib/actions/createUser";
 export default function RegisterForm() {
     const [state, formAction] = useActionState(createUser, {
         success: false, 
-        errors: {
-          name: [],
-          email: [],
-          password: [],
-          confirmPassword: []
-        },
+        errors: {},
     })
   return (
     <Card className="w-full max-w-md mx-auto">
@@ -32,7 +28,7 @@ export default function RegisterForm() {
                 <Label htmlFor="name">名前</Label>
                 <Input id="name" type="text" name="name" required />
                 {state.errors?.name && (
-                    <p className="text-red-500 text-sm mt-1">{state.errors.name.join(',')}</p>
+                  <p className="text-red-500 text-sm mt-1">{state.errors.name.join(',')}</p>
                 )}
             </div>
             <div className="space-y-2">

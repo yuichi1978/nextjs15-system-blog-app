@@ -1,9 +1,10 @@
 import { notFound } from "next/navigation";
-import { getPost } from "@/lib/post";
+import { getOwnPost } from "@/lib/ownPost";
 import Image from "next/image";
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { format } from "date-fns";
 import { ja } from "date-fns/locale";
+import { auth } from "@/auth";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import rehypeHighlight from "rehype-highlight";
@@ -13,10 +14,18 @@ type Params = {
   params: Promise<{ id: string }>;
 };
 
-export default async function PostPage({ params }: Params) {
-  const { id } = await params;
-  const post = await getPost(id);
+export default async function ShowPage({ params }: Params) {
+  const session = await auth();
+  const userId = session?.user?.id;
 
+  if (!session?.user?.email || !userId) {
+    throw new Error("不正なリクエストです");
+  }
+
+  const { id } = await params;
+  const post = await getOwnPost(userId, id);
+
+  // 記事がなければnotFoundページが表示される
   if (!post) {
     notFound();
   }
@@ -48,7 +57,7 @@ export default async function PostPage({ params }: Params) {
           <CardTitle className="text-3xl font-bold">{post.title}</CardTitle>
         </CardHeader>
         <CardContent>
-          <div className="border p-4 bg-gray-50 prose max-w-none">
+          <div className="prose max-w-none">
             <ReactMarkdown
               remarkPlugins={[remarkGfm]}
               rehypePlugins={[rehypeHighlight]}
